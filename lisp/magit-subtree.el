@@ -102,7 +102,7 @@
 (defun magit-subtree-add-commit (prefix commit args)
   "Add COMMIT as a new subtree at PREFIX."
   (interactive (list (magit-subtree-prefix "Add subtree")
-                     (magit-read-string-ns "Commit")
+                     (magit-read-branch-or-commit "Commit")
                      (magit-subtree-args)))
   (magit-git-subtree "add" prefix args commit))
 
@@ -110,7 +110,7 @@
 (defun magit-subtree-merge (prefix commit args)
   "Merge COMMIT into the PREFIX subtree."
   (interactive (list (magit-subtree-prefix "Merge into subtree")
-                     (magit-read-string-ns "Commit")
+                     (magit-read-branch-or-commit "Commit")
                      (magit-subtree-args)))
   (magit-git-subtree "merge" prefix args commit))
 
@@ -128,17 +128,19 @@
 ;;;###autoload
 (defun magit-subtree-push (prefix repository ref args)
   "Extract the history of the subtree PREFIX and push it to REF on REPOSITORY."
-  (interactive (list (magit-subtree-prefix "Push subtree")
-                     (magit-read-remote-or-url "To repository")
-                     (magit-read-string-ns "To reference")
-                     (magit-subtree-args)))
+  (interactive
+   (cons (magit-subtree-prefix "Push subtree")
+         (let ((remote (magit-read-remote-or-url "To repository")))
+           (list remote
+                 (magit-read-refspec "To reference" remote)
+                 (magit-subtree-args)))))
   (magit-git-subtree "push" prefix args repository ref))
 
 ;;;###autoload
 (defun magit-subtree-split (prefix commit args)
   "Extract the history of the subtree PREFIX."
   (interactive (list (magit-subtree-prefix "Split subtree")
-                     (magit-read-string-ns "Commit")
+                     (magit-read-branch-or-commit "Commit")
                      (magit-subtree-args)))
   (magit-git-subtree "split" prefix args commit))
 
