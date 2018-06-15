@@ -113,7 +113,8 @@ If DEMAND is non-nil and the project object does not exist in the
 forge database yet, then create, insert and return the object.
 Doing so involves an API call.  If the required information
 cannot be determined, then raise an error."
-  (progn
+  (magit--with-refresh-cache
+      (list default-directory 'magit-forge-get-project demand)
     (cl-block get-project
       (cl-flet ((return (msg &rest args)
                         (if demand
