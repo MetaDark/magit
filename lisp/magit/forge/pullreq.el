@@ -122,6 +122,8 @@
   (interactive (list (magit-read-pullreq "Browse pull-request")))
   (browse-url (magit-forge--format-url pullreq 'pullreq-url-format)))
 
+(defalias 'magit-pullreq-visit 'magit-pullreq-browse)
+
 ;;; Utilities
 
 (defun magit-read-pullreq (prompt)
@@ -150,6 +152,7 @@
 (defvar magit-pullreq-section-map
   (let ((map (make-sparse-keymap)))
     (define-key map [remap magit-browse-thing] 'magit-pullreq-browse)
+    (define-key map [remap magit-visit-thing]  'magit-pullreq-visit)
     map))
 
 (defun magit-insert-pullreqs ()
