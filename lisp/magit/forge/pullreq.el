@@ -134,8 +134,31 @@
     (and number
          (magit-forge-get-pullreq prj number))))
 
+;;; Sections
+
 (defun magit-pullreq-at-point ()
   (magit-section-when pullreq))
+
+(defvar magit-pullreq-section-map
+  (let ((map (make-sparse-keymap)))
+    map))
+
+(defun magit-insert-pullreqs ()
+  (when-let ((prj (magit-forge-get-project nil))
+             (pullreqs (oref prj pullreqs)))
+    (magit-insert-section (pullreqs nil t)
+      (magit-insert-heading "Pull requests:")
+      (let ((format (format "%%-%is %%s\n"
+                            (1+ (length
+                                 (format "%i" (oref (car pullreqs) number)))))))
+        (dolist (pullreq pullreqs)
+          (with-slots (number title) pullreq
+            (magit-insert-section (pullreq pullreq)
+              (insert (format format
+                              (propertize (format "#%s" number)
+                                          'face 'magit-dimmed)
+                              title))))))
+      (insert ?\n))))
 
 ;;; _
 (provide 'magit/forge/pullreq)

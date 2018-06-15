@@ -105,8 +105,31 @@
     (and number
          (magit-forge-get-issue prj number))))
 
+;;; Sections
+
 (defun magit-issue-at-point ()
   (magit-section-when issue))
+
+(defvar magit-issue-section-map
+  (let ((map (make-sparse-keymap)))
+    map))
+
+(defun magit-insert-issues ()
+  (when-let ((prj (magit-forge-get-project nil))
+             (issues (oref prj issues)))
+    (magit-insert-section (issues nil t)
+      (magit-insert-heading "Issues:")
+      (let ((format (format "%%-%is %%s\n"
+                            (1+ (length
+                                 (format "%i" (oref (car issues) number)))))))
+        (dolist (issue issues)
+          (with-slots (number title) issue
+            (magit-insert-section (issue issue)
+              (insert (format format
+                              (propertize (format "#%s" number)
+                                          'face 'magit-dimmed)
+                              title))))))
+      (insert ?\n))))
 
 ;;; _
 (provide 'magit/forge/issue)
