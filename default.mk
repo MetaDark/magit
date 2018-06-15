@@ -62,7 +62,6 @@ ELS += magit.el
 ELS += magit-status.el
 ELS += magit-refs.el
 ELS += magit-files.el
-ELS += magit-collab.el
 ELS += magit/forge/db.el
 ELS += magit/forge/issue.el
 ELS += magit/forge/pullreq.el
