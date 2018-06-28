@@ -87,10 +87,6 @@ ID, and vice-versa."
    (issues                    :closql-class magit-forge-issue)
    (pullreqs                  :closql-class magit-forge-pullreq)))
 
-(defclass magit-forge-topic (magit-forge-object) () :abstract t)
-
-(defclass magit-forge-post (magit-forge-object) () :abstract t)
-
 ;;; Core
 
 (defconst magit--forge-url-regexp "\
@@ -102,12 +98,6 @@ ID, and vice-versa."
 (cl-defmethod magit-forge--object-id ((prj magit-forge-project) number)
   "Return the id of the specified topic."
   (format "%s:%s" (oref prj id) number))
-
-(cl-defmethod magit-forge-get-project ((topic magit-forge-topic))
-  "Return the object for the project that TOPIC belongs to."
-  (closql-get (magit-db)
-              (oref topic project)
-              'magit-forge-project))
 
 (cl-defmethod magit-forge-get-project ((demand symbol))
   "Return the project object for the current repository if any.
@@ -190,10 +180,6 @@ cannot be determined, then raise an error."
 
 ;;; Utilities
 
-(cl-defmethod magit-forge--format-url ((topic magit-forge-topic) slot)
-  (magit-forge--format-url (magit-forge-get-project topic) slot
-                           `((?i . ,(oref topic number)))))
-
 (cl-defmethod magit-forge--format-url ((prj magit-forge-project) slot &optional spec)
   (format-spec
    (eieio-oref-default prj slot)
@@ -236,6 +222,8 @@ cannot be determined, then raise an error."
 
 (provide 'magit/forge)
 
+(require 'magit/forge/post)
+(require 'magit/forge/topic)
 (require 'magit/forge/issue)
 (require 'magit/forge/pullreq)
 

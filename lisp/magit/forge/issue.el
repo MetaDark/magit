@@ -24,6 +24,8 @@
 ;;; Code:
 
 (require 'magit/forge)
+(require 'magit/forge/post)
+(require 'magit/forge/topic)
 
 ;;; Classes
 

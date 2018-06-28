@@ -33,8 +33,12 @@ magit-refs.elc: 	magit.elc
 magit-files.elc:	magit.elc
 magit/forge/db.elc:	magit.elc
 magit/forge.elc:	magit.elc magit/forge/db.elc
-magit/forge/issue.elc:	magit.elc magit/forge.elc
-magit/forge/pullreq.elc: magit.elc magit/forge.elc
+magit/forge/post.elc:	magit.elc magit/forge.elc
+magit/forge/topic.elc:	magit.elc magit/forge.elc magit/forge/post.elc
+magit/forge/issue.elc:	magit.elc magit/forge.elc \
+			magit/forge/post.elc magit/forge/topic.elc
+magit/forge/pullreq.elc: magit.elc magit/forge.elc \
+			magit/forge/post.elc magit/forge/topic.elc
 magit/forge/github.elc:	magit.elc magit/forge.elc \
 			magit/forge/issue.elc magit/forge/pullreq.elc
 magit/forge/gitlab.elc:	magit.elc magit/forge.elc \
